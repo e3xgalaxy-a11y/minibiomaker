@@ -1,0 +1,397 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniBioMaker - Create Your Bio</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f5f5f5;
+ color:#292929;
+}
+header{
+ background:white;
+ padding:17px 7%;
+ border-bottom:1px solid #ddd;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+}
+.logo{font-size:23px;font-weight:bold;color:#5148c9}
+header small{color:#777}
+.container{
+ max-width:1050px;
+ margin:30px auto;
+ padding:15px;
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:22px;
+}
+.panel{
+ background:white;
+ padding:23px;
+ border:1px solid #e1e1e1;
+ border-radius:9px;
+}
+h2{font-size:20px;margin-top:0}
+label{
+ display:block;
+ font-size:14px;
+ font-weight:bold;
+ margin:16px 0 7px;
+}
+input,textarea,select{
+ width:100%;
+ padding:11px;
+ border:1px solid #d5d5d5;
+ border-radius:6px;
+ font-size:14px;
+ background:white;
+ outline:none;
+}
+input:focus,textarea:focus,select:focus{border-color:#5148c9}
+textarea{resize:vertical;min-height:85px}
+input[type=color]{height:43px;padding:4px;cursor:pointer}
+input[type=file]{padding:8px}
+.preview-area{
+ background:#f0f0f0;
+ padding:20px;
+ border-radius:8px;
+ min-height:390px;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+}
+.bio-card{
+ --theme:#5148c9;
+ background:white;
+ width:100%;
+ max-width:340px;
+ padding:27px 20px;
+ text-align:center;
+ border:1px solid #ddd;
+ border-radius:12px;
+ overflow-wrap:anywhere;
+}
+.bio-card.round{border-radius:35px}
+.bio-card.simple{border-radius:0;border-top:6px solid var(--theme)}
+.bio-card.dark{background:#252525;color:white;border-color:#252525}
+.bio-card.colorful{background:var(--theme);color:white;border:0}
+.avatar{
+ width:100px;height:100px;
+ border-radius:50%;
+ object-fit:cover;
+ background:#ddd;
+ border:3px solid var(--theme);
+}
+.name{font-size:23px;margin:14px 0 5px}
+.username{font-size:14px;color:#888}
+.dark .username,.dark .location{color:#bbb}
+.colorful .username,.colorful .location{color:#f0edff}
+.bio-text{font-size:14px;line-height:1.6;margin:17px 0}
+.location{font-size:13px;color:#888;margin:10px 0}
+.website{
+ display:inline-block;
+ color:var(--theme);
+ font-size:14px;
+ margin-top:8px;
+ text-decoration:none;
+ overflow-wrap:anywhere;
+}
+.dark .website,.colorful .website{color:white}
+.social{
+ margin-top:17px;
+ font-size:13px;
+ color:inherit;
+}
+button{
+ padding:12px 15px;
+ border:0;
+ border-radius:6px;
+ cursor:pointer;
+ font-weight:bold;
+ font-size:14px;
+}
+.primary{background:#5148c9;color:white}
+.secondary{background:#eee;color:#333}
+.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:20px}
+.color-options{display:flex;gap:10px;margin-top:9px}
+.color-dot{
+ width:27px;height:27px;border-radius:50%;
+ border:2px solid white;outline:1px solid #ccc;
+ cursor:pointer;
+}
+.hint{font-size:12px;color:#888;margin-top:6px}
+footer{text-align:center;padding:25px;color:#888;font-size:13px}
+#message{font-size:13px;color:#5148c9;margin-top:12px}
+@media(max-width:750px){
+ .container{grid-template-columns:1fr;margin:15px auto}
+ header{padding:15px 5%}
+ .panel{padding:18px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+ <div class="logo">MiniBioMaker</div>
+ <small>Simple Bio Creator</small>
+</header>
+
+<div class="container">
+
+ <section class="panel">
+  <h2>Create Your Bio</h2>
+  <p class="hint">Fill in your details and see your bio instantly.</p>
+
+  <label>Your Name</label>
+  <input id="name" placeholder="Enter your name" maxlength="35">
+
+  <label>Username</label>
+  <input id="username" placeholder="@yourusername" maxlength="30">
+
+  <label>Profile Picture</label>
+  <input type="file" id="photo" accept="image/*">
+  <p class="hint">Choose an image from your device.</p>
+
+  <label>Your Bio</label>
+  <textarea id="bio" maxlength="180" placeholder="Write something about yourself..."></textarea>
+
+  <label>Location (Optional)</label>
+  <input id="location" placeholder="Your city or country" maxlength="50">
+
+  <label>Website / Social Link (Optional)</label>
+  <input id="website" placeholder="https://example.com" maxlength="150">
+
+  <label>Choose Your Colour</label>
+  <input type="color" id="color" value="#5148c9">
+
+  <div class="color-options">
+   <div class="color-dot" style="background:#5148c9" data-color="#5148c9"></div>
+   <div class="color-dot" style="background:#e74c3c" data-color="#e74c3c"></div>
+   <div class="color-dot" style="background:#159b69" data-color="#159b69"></div>
+   <div class="color-dot" style="background:#e89b20" data-color="#e89b20"></div>
+   <div class="color-dot" style="background:#222222" data-color="#222222"></div>
+   <div class="color-dot" style="background:#e65b9b" data-color="#e65b9b"></div>
+  </div>
+
+  <label>Choose Bio Style</label>
+  <select id="style">
+   <option value="normal">Classic</option>
+   <option value="round">Rounded</option>
+   <option value="simple">Simple</option>
+   <option value="dark">Dark</option>
+   <option value="colorful">Colourful</option>
+  </select>
+
+  <div class="buttons">
+   <button class="primary" id="copyBtn">Copy Bio</button>
+   <button class="secondary" id="downloadBtn">Download Card</button>
+   <button class="secondary" id="resetBtn">Reset</button>
+  </div>
+
+  <div id="message"></div>
+ </section>
+
+ <section class="panel">
+  <h2>Live Preview</h2>
+  <p class="hint">This is how your finished bio will look.</p>
+
+  <div class="preview-area">
+   <div class="bio-card" id="card">
+    <img class="avatar" id="previewPhoto"
+     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23dddddd'/%3E%3Ccircle cx='50' cy='38' r='19' fill='%23999999'/%3E%3Cpath d='M15 100 Q15 65 50 65 Q85 65 85 100' fill='%23999999'/%3E%3C/svg%3E"
+     alt="Profile picture">
+
+    <h2 class="name" id="previewName">Your Name</h2>
+    <div class="username" id="previewUsername">@username</div>
+    <p class="bio-text" id="previewBio">Your bio will appear here. Tell everyone something about yourself!</p>
+    <div class="location" id="previewLocation"></div>
+    <a class="website" id="previewWebsite" target="_blank" rel="noopener" hidden></a>
+    <div class="social">Made with MiniBioMaker</div>
+   </div>
+  </div>
+ </section>
+
+</div>
+
+<footer>
+ MiniBioMaker © 2026 · Create your own simple bio.
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+
+let photoData = "";
+
+function updatePreview(){
+ const name = $("name").value.trim();
+ const username = $("username").value.trim();
+ const bio = $("bio").value.trim();
+ const location = $("location").value.trim();
+ const website = $("website").value.trim();
+ const color = $("color").value;
+ const style = $("style").value;
+
+ $("previewName").textContent = name || "Your Name";
+ $("previewUsername").textContent =
+   username ? (username.startsWith("@") ? username : "@"+username) : "@username";
+ $("previewBio").textContent =
+   bio || "Your bio will appear here. Tell everyone something about yourself!";
+ $("previewLocation").textContent = location ? "📍 "+location : "";
+
+ const link = $("previewWebsite");
+ let safeUrl = "";
+ try {
+  const url = new URL(website);
+  if(url.protocol === "http:" || url.protocol === "https:"){
+   safeUrl = url.href;
+  }
+ } catch(e){}
+
+ link.hidden = !safeUrl;
+ link.href = safeUrl || "#";
+ link.textContent = safeUrl ? website : "";
+
+ $("card").style.setProperty("--theme",color);
+ $("card").className = "bio-card " + (style === "normal" ? "" : style);
+ $("previewPhoto").src = photoData || $("previewPhoto").dataset.defaultImage;
+}
+
+const defaultPhoto = $("previewPhoto").src;
+$("previewPhoto").dataset.defaultImage = defaultPhoto;
+
+["name","username","bio","location","website","color","style"].forEach(id=>{
+ $(id).addEventListener("input",updatePreview);
+ $(id).addEventListener("change",updatePreview);
+});
+
+document.querySelectorAll(".color-dot").forEach(dot=>{
+ dot.addEventListener("click",()=>{
+  $("color").value = dot.dataset.color;
+  updatePreview();
+ });
+});
+
+$("photo").addEventListener("change",function(){
+ const file = this.files[0];
+ if(!file) return;
+
+ if(!file.type.startsWith("image/")){
+  alert("Please choose an image file.");
+  this.value = "";
+  return;
+ }
+
+ if(file.size > 5*1024*1024){
+  alert("Please choose an image smaller than 5 MB.");
+  this.value = "";
+  return;
+ }
+
+ const reader = new FileReader();
+ reader.onload = e=>{
+  photoData = e.target.result;
+  updatePreview();
+ };
+ reader.readAsDataURL(file);
+});
+
+function getBioText(){
+ const name = $("name").value.trim() || "Your Name";
+ const username = $("username").value.trim();
+ const bio = $("bio").value.trim();
+ const location = $("location").value.trim();
+ const website = $("website").value.trim();
+
+ return [
+  name,
+  username ? (username.startsWith("@") ? username : "@"+username) : "",
+  bio,
+  location ? "Location: "+location : "",
+  website ? "Website: "+website : ""
+ ].filter(Boolean).join("\n");
+}
+
+$("copyBtn").addEventListener("click",async()=>{
+ try{
+  await navigator.clipboard.writeText(getBioText());
+  $("message").textContent = "✓ Bio copied successfully!";
+ }catch(e){
+  const area = document.createElement("textarea");
+  area.value = getBioText();
+  document.body.appendChild(area);
+  area.select();
+  document.execCommand("copy");
+  area.remove();
+  $("message").textContent = "✓ Bio copied!";
+ }
+});
+
+$("downloadBtn").addEventListener("click",()=>{
+ const card = $("card");
+ const clone = card.cloneNode(true);
+ const img = clone.querySelector("img");
+
+ if(photoData) img.src = photoData;
+
+ const css = `
+ *{box-sizing:border-box}
+ body{font-family:Arial,sans-serif;margin:0}
+ .bio-card{--theme:${$("color").value};background:white;width:340px;
+ padding:27px 20px;text-align:center;border:1px solid #ddd;
+ border-radius:12px;overflow-wrap:anywhere;color:#292929}
+ .bio-card.round{border-radius:35px}
+ .bio-card.simple{border-radius:0;border-top:6px solid var(--theme)}
+ .bio-card.dark{background:#252525;color:white;border-color:#252525}
+ .bio-card.colorful{background:var(--theme);color:white;border:0}
+ .avatar{width:100px;height:100px;border-radius:50%;object-fit:cover;
+ border:3px solid var(--theme)}
+ .name{font-size:23px;margin:14px 0 5px}
+ .username{font-size:14px;color:#888}
+ .dark .username,.dark .location{color:#bbb}
+ .colorful .username,.colorful .location{color:#eee}
+ .bio-text{font-size:14px;line-height:1.6;margin:17px 0}
+ .location{font-size:13px;color:#888;margin:10px 0}
+ .website{display:block;color:var(--theme);font-size:14px;margin-top:8px}
+ .dark .website,.colorful .website{color:white}
+ .social{margin-top:17px;font-size:13px}
+ `;
+
+ const html = `
+ <!DOCTYPE html><html><head><meta charset="UTF-8">
+ <style>${css}</style></head><body>
+ ${clone.outerHTML}
+ </body></html>`;
+
+ const blob = new Blob([html],{type:"text/html"});
+ const url = URL.createObjectURL(blob);
+ const a = document.createElement("a");
+ a.href = url;
+ a.download = "my-bio-card.html";
+ a.click();
+ setTimeout(()=>URL.revokeObjectURL(url),1000);
+ $("message").textContent = "✓ Your bio card was downloaded as an HTML file!";
+});
+
+$("resetBtn").addEventListener("click",()=>{
+ ["name","username","bio","location","website"].forEach(id=>$(id).value="");
+ $("color").value="#5148c9";
+ $("style").value="normal";
+ $("photo").value="";
+ photoData="";
+ $("message").textContent="Form reset!";
+ updatePreview();
+});
+
+updatePreview();
+</script>
+
+</body>
+</html>
